@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const addressSchema = new mongoose.Schema({
-  userId: { tpe: String, required: true },
+  userId: { type: String, required: true },
   fullName: { type: String, required: true },
   phoneNumber: { type: String, required: true },
   pinCode: { type: Number, required: true },
