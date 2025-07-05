@@ -15,6 +15,8 @@ export async function POST(request) {
   try {
     const { userId } = getAuth(request);
 
+    console.log(userId);
+
     const isSeller = await authSeller(userId);
 
     if (!isSeller) {
@@ -31,7 +33,7 @@ export async function POST(request) {
 
     const files = formData.getAll("images");
 
-    if (files || files.length === 0) {
+    if (!files || files.length === 0) {
       return NextResponse.json({
         success: false,
         message: "No files uploaded.",
@@ -84,7 +86,7 @@ export async function POST(request) {
     console.log("Upload error: ", error);
     return NextResponse.json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 }
