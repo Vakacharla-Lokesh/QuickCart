@@ -15,7 +15,7 @@ export async function POST(request) {
   try {
     const { userId } = getAuth(request);
 
-    console.log(userId);
+    // console.log(userId);
 
     const isSeller = await authSeller(userId);
 
