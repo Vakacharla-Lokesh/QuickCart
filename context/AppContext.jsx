@@ -26,7 +26,7 @@ export const AppContextProvider = (props) => {
 
   const fetchProductData = async () => {
     try {
-      const data = await axios.get("/api/product/list");
+      const { data } = await axios.get("/api/product/list");
 
       if (data.success) {
         setProducts(data.products);
@@ -52,7 +52,7 @@ export const AppContextProvider = (props) => {
 
       if (data.success) {
         setUserData(data.user);
-        setCartItems(data.user.cartItems);
+        setCartItems(data.user.cartItems || {}); // <-- ensure it's always an object
       } else {
         toast.error(data.message);
       }
@@ -62,7 +62,7 @@ export const AppContextProvider = (props) => {
   };
 
   const addToCart = async (itemId) => {
-    let cartData = structuredClone(cartItems);
+    let cartData = structuredClone(cartItems || {}); // <-- fix here
     if (cartData[itemId]) {
       cartData[itemId] += 1;
     } else {
@@ -88,7 +88,7 @@ export const AppContextProvider = (props) => {
   };
 
   const updateCartQuantity = async (itemId, quantity) => {
-    let cartData = structuredClone(cartItems);
+    let cartData = structuredClone(cartItems || {}); // <-- fix here
     if (quantity === 0) {
       delete cartData[itemId];
     } else {
@@ -127,7 +127,8 @@ export const AppContextProvider = (props) => {
     let totalAmount = 0;
     for (const items in cartItems) {
       let itemInfo = products.find((product) => product._id === items);
-      if (cartItems[items] > 0) {
+      if (cartItems[items] > 0 && itemInfo) {
+        // <-- add itemInfo check
         totalAmount += itemInfo.offerPrice * cartItems[items];
       }
     }
